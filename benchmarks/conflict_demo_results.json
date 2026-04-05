@@ -1,0 +1,41 @@
+{
+  "total_pairs_compared": 22,
+  "stage1_candidates": 5,
+  "stage2_contradictions": 3,
+  "total_artifacts": 8,
+  "conflicts": [
+    {
+      "description": "High similarity (0.96) but divergent confidence: 0.55 vs 0.95",
+      "artifact_ids": [
+        "f809093d-b817-4419-ac6a-691f3258deaa",
+        "833e23ae-8244-4481-9914-02aaa4bd1c6f"
+      ],
+      "claims": [
+        "The AI code editor market is estimated at $2.1 billion in 2026",
+        "The AI code editor market is projected to reach $5 billion by 2026"
+      ]
+    },
+    {
+      "description": "High similarity (0.72) but divergent confidence: 0.55 vs 0.90",
+      "artifact_ids": [
+        "3c3261c9-5475-409d-9d5a-a26c52e2e46c",
+        "71ec2778-62db-4aa5-bc93-36367810c773"
+      ],
+      "claims": [
+        "GitHub Copilot's market share has declined to 35% as competitors gained ground",
+        "GitHub Copilot holds 55% market share among AI code editors"
+      ]
+    },
+    {
+      "description": "High similarity (0.96) but divergent confidence: 0.60 vs 0.95",
+      "artifact_ids": [
+        "6dcc8656-7274-4504-8816-601ab3399d8d",
+        "c2ec9be9-9fae-44bb-b1a3-a33875dee05f"
+      ],
+      "claims": [
+        "AI code editors improve developer productivity by 15-25% in real-world settings",
+        "AI code editors improve developer productivity by 40-55%"
+      ]
+    }
+  ]
+}

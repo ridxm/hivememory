@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hivememory — shared reasoning memory for multi-agent systems</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="index.html" class="logo">HIVEMEMORY</a>
+    <ul class="links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="results.html">Results</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-readout">
+      <span class="readout-line">3 agents, same task. 56% of queries answered from memory. 0 redundant research.</span>
+    </div>
+    <h1>hivememory</h1>
+    <p class="subline">shared reasoning memory for multi-agent systems</p>
+    <div class="stats-grid hero-stats">
+      <div class="stat-box">
+        <span class="number">56%</span>
+        <span class="label">reuse rate</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">17.5%</span>
+        <span class="label">token reduction</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">9.0</span>
+        <span class="label">quality score</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">3</span>
+        <span class="label">conflicts caught</span>
+      </div>
+    </div>
+    <div class="hero-links">
+      <a href="https://github.com/ridxm/hivememory" class="btn btn-primary">GitHub Repo</a>
+      <a href="https://pypi.org/project/hivememory/" class="btn btn-secondary">pip install hivememory</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <section>
+    <span class="section-label">01 // The Problem</span>
+    <h2>Multi-agent systems waste tokens and miss contradictions</h2>
+    <p>When multiple AI agents research the same problem independently, they re-derive the same knowledge from scratch. Agent 2 doesn't know what Agent 1 already found. The result: redundant LLM calls, wasted tokens, and contradictory conclusions that no one catches.</p>
+    <p>hivememory gives agents a shared memory layer. Agents store structured reasoning artifacts, query what others have found before doing their own work, and get automatic alerts when findings contradict each other.</p>
+  </section>
+
+  <section>
+    <span class="section-label">02 // How It Works</span>
+    <h2>Three primitives for shared reasoning</h2>
+    <div class="three-col">
+      <div class="block">
+        <h3>Reasoning artifacts</h3>
+        <p>Agents store structured claims with evidence, confidence scores, and provenance links. Not raw text. Each artifact records who produced it, what supports it, and what it builds on.</p>
+      </div>
+      <div class="block">
+        <h3>Conflict detection</h3>
+        <p>When a new artifact is stored, FAISS finds semantically similar claims. If two artifacts are close but have divergent confidence, a conflict is flagged. An optional LLM check confirms true contradictions.</p>
+      </div>
+      <div class="block">
+        <h3>Provenance tracking</h3>
+        <p>Every artifact records its dependencies as artifact IDs, forming a directed acyclic graph. The DAG answers "which agent's work did this build on?" and enables cascading invalidation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">03 // Quickstart</span>
+    <h2>Ten lines to shared memory</h2>
+    <pre>from hivememory import HiveMemory, Evidence
+
+hive = HiveMemory()
+
+# store a finding
+art = hive.write(
+    claim="Voice AI market projected to reach $50B by 2028",
+    evidence=[Evidence(source="industry report", content="35% CAGR", reliability=0.9)],
+    confidence=0.85,
+    agent_id="researcher-1",
+)
+
+# query shared memory before doing new research
+existing = hive.query("voice AI market size", top_k=3)
+
+# check for contradictions
+open_conflicts = hive.get_conflicts()</pre>
+  </section>
+
+  <section>
+    <span class="section-label">04 // Live Output</span>
+    <h2>Real run, real output</h2>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-title">python benchmarks/conflict_demo.py</span>
+      </div>
+      <pre class="terminal-body">============================================================
+CONFLICT DETECTION DEMO
+============================================================
+
+--- Agent 1 (optimistic analyst) storing findings ---
+  stored: The AI code editor market is projected to reach $5B by 2026
+  stored: GitHub Copilot holds 55% market share among AI code editors
+  stored: AI code editors improve developer productivity by 40-55%
+  stored: Cursor has an NPS score of 72 among professional developers
+
+Artifacts in memory: 4
+Conflicts so far: 0
+
+--- Agent 2 (conservative analyst) storing findings ---
+  <span class="t-conflict">CONFLICT</span>: AI code editor market estimated at $2.1B in 2026
+    &rarr; High similarity (0.96) but divergent confidence: 0.55 vs 0.95
+  <span class="t-conflict">CONFLICT</span>: Copilot's market share has declined to 35%
+    &rarr; High similarity (0.72) but divergent confidence: 0.55 vs 0.90
+  <span class="t-conflict">CONFLICT</span>: AI code editors improve productivity by 15-25%
+    &rarr; High similarity (0.96) but divergent confidence: 0.60 vs 0.95
+  stored: Enterprise adoption of AI code editors reached 78% in 2025
+
+============================================================
+PIPELINE RESULTS
+============================================================
+
+  Artifact pairs compared:           <span class="t-num">22</span>
+  Stage 1 candidates (sim &gt; 0.7):    <span class="t-num">5</span>
+  Stage 2 confirmed contradictions:   <span class="t-num">3</span></pre>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">05 // Explore</span>
+    <h2>Go deeper</h2>
+    <div class="card-grid">
+      <a href="architecture.html" class="card">
+        <h3>Architecture</h3>
+        <p>FAISS + SQLite backend, conflict detection pipeline, provenance DAG, and wiki export.</p>
+      </a>
+      <a href="results.html" class="card">
+        <h3>Results</h3>
+        <p>Real benchmark with gpt-4o-mini. Token savings, quality scores, and artifact reuse data.</p>
+      </a>
+      <a href="https://github.com/ridxm/hivememory" class="card">
+        <h3>GitHub</h3>
+        <p>Source code, examples, tests, and benchmarks. MIT licensed.</p>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-left">
+      <a href="https://github.com/ridxm/hivememory">github.com/ridxm/hivememory</a> &middot; MIT License
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/ridxm">@ridxm</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

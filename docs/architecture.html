@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture — hivememory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="index.html" class="logo">HIVEMEMORY</a>
+    <ul class="links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="architecture.html" class="active">Architecture</a></li>
+      <li><a href="results.html">Results</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <section>
+    <span class="section-label">01 // Overview</span>
+    <h2>System architecture</h2>
+    <p>hivememory is a shared memory layer that sits between agents and their LLM calls. Agents write structured artifacts after research, query memory before starting new work, and receive conflict alerts when findings disagree.</p>
+    <div class="pipeline-flow">
+      <div class="pipeline-step">
+        <span class="pipeline-step-num">01</span>
+        <span class="pipeline-step-title">agents</span>
+        <span class="pipeline-step-desc">n agents research in parallel</span>
+      </div>
+      <div class="pipeline-sep">&rarr;</div>
+      <div class="pipeline-step">
+        <span class="pipeline-step-num">02</span>
+        <span class="pipeline-step-title">write artifacts</span>
+        <span class="pipeline-step-desc">structured claims + evidence</span>
+      </div>
+      <div class="pipeline-sep">&rarr;</div>
+      <div class="pipeline-step active">
+        <span class="pipeline-step-num">03</span>
+        <span class="pipeline-step-title">shared memory</span>
+        <span class="pipeline-step-desc">FAISS + SQLite</span>
+      </div>
+      <div class="pipeline-sep">&rarr;</div>
+      <div class="pipeline-step">
+        <span class="pipeline-step-num">04</span>
+        <span class="pipeline-step-title">query before research</span>
+        <span class="pipeline-step-desc">skip what's already known</span>
+      </div>
+      <div class="pipeline-sep">&rarr;</div>
+      <div class="pipeline-step">
+        <span class="pipeline-step-num">05</span>
+        <span class="pipeline-step-title">conflict detection</span>
+        <span class="pipeline-step-desc">embedding + LLM verification</span>
+      </div>
+      <div class="pipeline-sep">&rarr;</div>
+      <div class="pipeline-step">
+        <span class="pipeline-step-num">06</span>
+        <span class="pipeline-step-title">provenance DAG</span>
+        <span class="pipeline-step-desc">trace lineage across agents</span>
+      </div>
+    </div>
+    <p>The API surface is small: <code>write()</code>, <code>query()</code>, <code>get_conflicts()</code>, <code>resolve_conflict()</code>, and <code>export_wiki()</code>. Everything else is internal.</p>
+  </section>
+
+  <section>
+    <span class="section-label">02 // Reasoning Artifacts</span>
+    <h2>The data model</h2>
+    <p>The core unit of shared memory is a <code>ReasoningArtifact</code> — a structured claim with evidence, confidence, and provenance. Artifacts are queryable, comparable, and auditable. They replace raw text dumps.</p>
+
+    <h3>ReasoningArtifact</h3>
+    <ul class="field-list">
+      <li><span class="field-name">id</span> <span class="field-type">str</span> — UUID, auto-generated</li>
+      <li><span class="field-name">claim</span> <span class="field-type">str</span> — the factual claim this artifact represents</li>
+      <li><span class="field-name">agent_id</span> <span class="field-type">str</span> — which agent produced this</li>
+      <li><span class="field-name">evidence</span> <span class="field-type">list[Evidence]</span> — supporting evidence with source and reliability</li>
+      <li><span class="field-name">confidence</span> <span class="field-type">float</span> — 0.0 to 1.0, how confident the agent is</li>
+      <li><span class="field-name">dependencies</span> <span class="field-type">list[str]</span> — artifact IDs this builds on</li>
+      <li><span class="field-name">topic_embedding</span> <span class="field-type">list[float]</span> — sentence-transformer embedding of the claim</li>
+      <li><span class="field-name">created_at</span> <span class="field-type">datetime</span> — UTC timestamp</li>
+      <li><span class="field-name">status</span> <span class="field-type">str</span> — "active" or "superseded"</li>
+    </ul>
+
+    <h3>Evidence</h3>
+    <ul class="field-list">
+      <li><span class="field-name">source</span> <span class="field-type">str</span> — where this evidence came from</li>
+      <li><span class="field-name">content</span> <span class="field-type">str</span> — the evidence text</li>
+      <li><span class="field-name">reliability</span> <span class="field-type">float</span> — 0.0 to 1.0</li>
+    </ul>
+
+    <p>Artifacts link to each other through the <code>dependencies</code> field. When Agent 2 queries memory and finds Agent 1's work relevant, it lists those artifact IDs as dependencies in its own artifacts. This creates the provenance DAG.</p>
+  </section>
+
+  <section>
+    <span class="section-label">03 // Memory Store</span>
+    <h2>FAISS + SQLite dual backend</h2>
+    <p>hivememory uses two backends in parallel: FAISS for fast vector similarity search and SQLite for durable structured storage. Every artifact is stored in both.</p>
+
+    <h3>Write path</h3>
+    <p>When <code>hive.write()</code> or <code>hive.store()</code> is called:</p>
+    <ol style="margin: 1rem 0 1rem 1.5rem; max-width: 680px;">
+      <li>The claim text is embedded using sentence-transformers (all-MiniLM-L6-v2)</li>
+      <li>The embedding is L2-normalized and added to the FAISS IndexFlatIP</li>
+      <li>The full artifact (including embedding) is serialized to JSON and stored in SQLite</li>
+      <li>Conflict detection runs against existing artifacts in the index</li>
+      <li>The artifact is appended to the in-memory list</li>
+    </ol>
+
+    <h3>Query path</h3>
+    <p>When <code>hive.query()</code> is called:</p>
+    <ol style="margin: 1rem 0 1rem 1.5rem; max-width: 680px;">
+      <li>The query text is embedded using the same model</li>
+      <li>FAISS performs inner-product search (equivalent to cosine similarity on normalized vectors)</li>
+      <li>Top-k artifacts are returned, ranked by similarity</li>
+    </ol>
+    <p><code>query_with_scores()</code> returns similarity scores alongside artifacts, enabling threshold-based decisions on whether to skip or augment a research call.</p>
+  </section>
+
+  <section>
+    <span class="section-label">04 // Conflict Detection</span>
+    <h2>Two-stage contradiction pipeline</h2>
+    <p>Every new artifact is checked against existing claims. The pipeline is designed for high recall at stage 1 and high precision at stage 2.</p>
+
+    <div class="pipeline">
+      <div class="stage">
+        <span class="stage-label">Stage 1 — Embedding Similarity</span>
+        <h3>Cosine similarity filter</h3>
+        <p>When a new artifact is stored, FAISS finds the top-10 most similar existing claims. If any pair has cosine similarity above the <code>conflict_threshold</code> (default 0.8) AND a confidence difference greater than 0.3, a conflict is flagged.</p>
+        <p>This is fast (sub-millisecond) and catches most potential contradictions. It also produces false positives — two claims can be similar without contradicting each other.</p>
+      </div>
+      <div class="stage">
+        <span class="stage-label">Stage 2 — LLM Verification</span>
+        <h3>Contradiction check</h3>
+        <p>Flagged pairs are sent to an LLM (OpenAI or Anthropic) with a structured prompt asking whether the claims truly contradict each other. The LLM returns a JSON verdict with <code>is_contradiction</code>, <code>explanation</code>, and <code>winner_index</code>.</p>
+        <p>This eliminates false positives and provides an explanation that gets stored with the resolution.</p>
+      </div>
+    </div>
+
+    <h3>Contradiction check prompt</h3>
+    <pre>System: Two research findings may contradict each other.
+Respond with JSON:
+{"is_contradiction": true/false,
+ "explanation": "...",
+ "winner_index": 0 or 1}
+
+User: Claim 1 [agent-id]: {claim text}
+      Claim 2 [agent-id]: {claim text}</pre>
+  </section>
+
+  <section>
+    <span class="section-label">05 // Provenance</span>
+    <h2>Dependency DAG</h2>
+    <p>Every artifact records which prior artifacts it depends on. This forms a directed acyclic graph that tracks the lineage of knowledge across agents. You can query the DAG to answer: "which agent's work did this conclusion build on?" and trace any finding back to its sources.</p>
+    <p>When an upstream artifact is superseded (e.g., its conflict was resolved against it), downstream artifacts that depended on it can be flagged for review.</p>
+    <img src="screenshots/provenance_dag.png" alt="Provenance DAG from a real benchmark run" class="chart chart-wide">
+    <p class="chart-caption">Provenance DAG from a real benchmark run. Colors indicate source agent. Edges show "built on" relationships.</p>
+  </section>
+
+  <section>
+    <span class="section-label">06 // Wiki Export</span>
+    <h2>Markdown knowledge base</h2>
+    <p>hivememory can export the full artifact store as a set of interconnected markdown files — a wiki of everything agents have learned. The export includes an index page, per-agent topic pages, a conflicts page, and a provenance visualization.</p>
+    <p>This is inspired by single-agent knowledge base patterns (see <a href="https://karpathy.ai">Karpathy's work</a> on LLM knowledge accumulation). hivememory extends this to multi-agent systems where the knowledge base is built collaboratively and contradictions are surfaced rather than silently overwritten.</p>
+    <pre>from hivememory.wiki import WikiExporter
+
+WikiExporter(hive).export("wiki_output/")
+# generates: INDEX.md, CONFLICTS.md, PROVENANCE.md,
+#            and per-agent topic pages</pre>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-left">
+      <a href="https://github.com/ridxm/hivememory">github.com/ridxm/hivememory</a> &middot; MIT License
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/ridxm">@ridxm</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results — hivememory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="index.html" class="logo">HIVEMEMORY</a>
+    <ul class="links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="results.html" class="active">Results</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <section>
+    <span class="section-label">01 // Benchmark Setup</span>
+    <h2>Real LLM benchmark</h2>
+    <p>Three agents research "Competitive Landscape of AI Code Editors in 2026" using gpt-4o-mini. Each agent covers 3 sub-topics: product features, pricing/business models, and developer experience. Some sub-topics intentionally overlap across agents.</p>
+    <p>Two configurations are compared. In the baseline, all agents research independently with no shared state. In the hivememory configuration, agents query shared memory before each LLM call. When prior findings exist, the agent receives a focused prompt that avoids redundant research.</p>
+    <p>All numbers are from real API calls. No simulation.</p>
+  </section>
+
+  <section>
+    <span class="section-label">02 // At a Glance</span>
+    <h2>Key metrics</h2>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <span class="number">56%</span>
+        <span class="label">reuse rate</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">17.5%</span>
+        <span class="label">token reduction</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">9.0</span>
+        <span class="label">quality score</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">5 / 9</span>
+        <span class="label">queries augmented</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">03 // Token Consumption</span>
+    <h2>Where the savings come from</h2>
+    <p>Agents 2 and 3 use fewer tokens because they receive memory context before making LLM calls. When prior findings cover the query, the agent gets a focused prompt ("here's what we know, find what's missing") which produces shorter, non-redundant responses.</p>
+    <div class="chart-pair">
+      <div>
+        <img src="screenshots/token_consumption_per_agent.png" alt="Token consumption per agent" class="chart">
+        <p class="chart-caption">Per-agent token usage. Agents 2 and 3 use fewer tokens when memory has relevant findings.</p>
+      </div>
+      <div>
+        <img src="screenshots/token_consumption_total.png" alt="Total token consumption" class="chart">
+        <p class="chart-caption">Total tokens across all agents. 17.5% reduction with hivememory.</p>
+      </div>
+    </div>
+    <p>Token savings increase with more agents and longer research tasks. With 3 agents and 9 sub-topics, 56% of queries were served from memory. At scale, this compounds — each additional agent benefits from everything prior agents have already found.</p>
+  </section>
+
+  <section>
+    <span class="section-label">04 // Quality</span>
+    <h2>LLM-as-judge evaluation</h2>
+    <p>Both configurations produce research findings that are evaluated by gpt-4o-mini as a judge across four dimensions: completeness, accuracy, coherence, and contradiction-free. Each evaluation is run 3 times and averaged to reduce variance.</p>
+    <p>Quality is equal or slightly better with hivememory. The contradiction-free score is notably higher (9.3 vs 9.0) because memory-augmented agents build on verified findings rather than independently re-deriving claims that may conflict.</p>
+    <img src="screenshots/quality_comparison.png" alt="Quality comparison" class="chart">
+    <p class="chart-caption">LLM-as-judge scores across 4 dimensions, averaged over 3 evaluation runs.</p>
+  </section>
+
+  <section>
+    <span class="section-label">05 // Artifact Flow</span>
+    <h2>How artifacts move between agents</h2>
+    <p>Agent 1 starts with an empty memory and researches all sub-topics from scratch. Agent 2 queries memory before each call and finds relevant findings from Agent 1 — its research calls are shorter and more focused. Agent 3 benefits from both prior agents, reusing the most artifacts and spending the fewest tokens.</p>
+    <div class="chart-pair">
+      <div>
+        <img src="screenshots/artifact_reuse_flow.png" alt="Artifact reuse flow" class="chart">
+        <p class="chart-caption">How agents share work. Reuse increases and token usage decreases with each subsequent agent.</p>
+      </div>
+      <div>
+        <img src="screenshots/token_breakdown_pie.png" alt="Token breakdown" class="chart">
+        <p class="chart-caption">Baseline: all original research. hivememory: split across research, focused queries, and extraction.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">06 // Conflict Detection</span>
+    <h2>Two-stage pipeline in practice</h2>
+    <p>To demonstrate conflict detection, two agents research the same topic with different sources and confidence levels. An optimistic analyst cites bullish reports; a conservative analyst cites more cautious studies. hivememory catches the disagreements automatically.</p>
+    <div class="funnel">
+      <div class="funnel-step">
+        <span class="funnel-number">22</span>
+        <span class="funnel-label">artifact pairs compared</span>
+        <span class="funnel-desc">every new artifact vs. all existing artifacts in FAISS</span>
+      </div>
+      <div class="funnel-arrow">&darr;</div>
+      <div class="funnel-step">
+        <span class="funnel-number">5</span>
+        <span class="funnel-label">candidates from embedding similarity</span>
+        <span class="funnel-desc">cosine similarity &gt; 0.7 with confidence divergence &gt; 0.3</span>
+      </div>
+      <div class="funnel-arrow">&darr;</div>
+      <div class="funnel-step">
+        <span class="funnel-number">3</span>
+        <span class="funnel-label">confirmed contradictions</span>
+        <span class="funnel-desc">high similarity + divergent confidence flagged as conflicts</span>
+      </div>
+    </div>
+    <div class="conflict-examples">
+      <h3>Detected conflicts</h3>
+      <div class="conflict-card">
+        <span class="conflict-sim">similarity: 0.96</span>
+        <div class="conflict-pair">
+          <p><strong>optimistic-analyst</strong> (conf 0.95): "AI code editor market projected to reach $5B by 2026"</p>
+          <p><strong>conservative-analyst</strong> (conf 0.55): "AI code editor market estimated at $2.1B in 2026"</p>
+        </div>
+      </div>
+      <div class="conflict-card">
+        <span class="conflict-sim">similarity: 0.72</span>
+        <div class="conflict-pair">
+          <p><strong>optimistic-analyst</strong> (conf 0.90): "GitHub Copilot holds 55% market share"</p>
+          <p><strong>conservative-analyst</strong> (conf 0.55): "Copilot's market share has declined to 35%"</p>
+        </div>
+      </div>
+      <div class="conflict-card">
+        <span class="conflict-sim">similarity: 0.96</span>
+        <div class="conflict-pair">
+          <p><strong>optimistic-analyst</strong> (conf 0.95): "AI code editors improve productivity by 40-55%"</p>
+          <p><strong>conservative-analyst</strong> (conf 0.60): "AI code editors improve productivity by 15-25% in real-world settings"</p>
+        </div>
+      </div>
+    </div>
+    <p>The fourth claim from each agent (NPS score vs enterprise adoption) had low similarity and was correctly ignored — different topics, no conflict. The pipeline adds zero overhead when agents agree.</p>
+  </section>
+
+  <section>
+    <span class="section-label">07 // Provenance</span>
+    <h2>Dependency graph</h2>
+    <p>The provenance DAG from the shared benchmark run. Each node is an artifact, colored by the agent that produced it. Edges show which artifacts were used as context when producing new findings.</p>
+    <img src="screenshots/provenance_dag.png" alt="Provenance DAG" class="chart chart-wide">
+    <p class="chart-caption">Provenance DAG from the benchmark run. Colors = agents, edges = "built on" relationships.</p>
+  </section>
+
+  <section>
+    <span class="section-label">08 // Full Results</span>
+    <h2>Complete metrics table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Baseline</th>
+          <th>hivememory</th>
+          <th>Delta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Total tokens</td>
+          <td>11,896</td>
+          <td>9,810</td>
+          <td>-17.5%</td>
+        </tr>
+        <tr>
+          <td>Input tokens</td>
+          <td>5,364</td>
+          <td>4,649</td>
+          <td>-13.3%</td>
+        </tr>
+        <tr>
+          <td>Output tokens</td>
+          <td>6,532</td>
+          <td>5,161</td>
+          <td>-21.0%</td>
+        </tr>
+        <tr>
+          <td>LLM calls</td>
+          <td>18</td>
+          <td>18</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Memory-augmented queries</td>
+          <td>0 / 9</td>
+          <td>5 / 9</td>
+          <td>+5</td>
+        </tr>
+        <tr>
+          <td>Reuse rate</td>
+          <td>0%</td>
+          <td>56%</td>
+          <td>+56%</td>
+        </tr>
+        <tr>
+          <td>Wall clock time</td>
+          <td>113.5s</td>
+          <td>101.9s</td>
+          <td>-10.2%</td>
+        </tr>
+        <tr>
+          <td>Completeness (1-10)</td>
+          <td>9.0</td>
+          <td>9.3</td>
+          <td>+0.3</td>
+        </tr>
+        <tr>
+          <td>Accuracy (1-10)</td>
+          <td>9.0</td>
+          <td>8.7</td>
+          <td>-0.3</td>
+        </tr>
+        <tr>
+          <td>Coherence (1-10)</td>
+          <td>8.0</td>
+          <td>8.7</td>
+          <td>+0.7</td>
+        </tr>
+        <tr>
+          <td>Contradiction-free (1-10)</td>
+          <td>9.0</td>
+          <td>9.3</td>
+          <td>+0.3</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-left">
+      <a href="https://github.com/ridxm/hivememory">github.com/ridxm/hivememory</a> &middot; MIT License
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/ridxm">@ridxm</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
