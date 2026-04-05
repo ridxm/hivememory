@@ -153,18 +153,18 @@ def chart_llm_calls_per_agent(data):
 
 
 def chart_artifact_reuse_flow(data):
-    fig, ax = plt.subplots(figsize=(14, 6))
+    fig, ax = plt.subplots(figsize=(10, 6))
     style_ax(ax)
     fig.patch.set_facecolor(BG_COLOR)
-    ax.set_xlim(0, 14)
+    ax.set_xlim(0, 10)
     ax.set_ylim(0, 6)
     ax.axis("off")
 
     agents = list(data["shared"]["agents"].keys())
     agent_colors = [BASELINE_COLOR, HIVE_COLOR, "#4A90D9"]
 
-    x_positions = [1.5, 5.5, 9.5]
-    box_w, box_h = 3.0, 4.5
+    x_positions = [1.5, 5.0, 8.5]
+    box_w, box_h = 2.6, 4.5
 
     for i, (agent_id, x) in enumerate(zip(agents, x_positions)):
         a = data["shared"]["agents"][agent_id]
