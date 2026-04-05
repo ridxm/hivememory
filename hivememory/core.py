@@ -17,13 +17,16 @@ class HiveMemory:
         self,
         db_path: str = "hivememory.db",
         model_name: str = "all-MiniLM-L6-v2",
+        conflict_threshold: float = 0.8,
     ):
         self.db_path = db_path
+        self.conflict_threshold = conflict_threshold
         self.model = SentenceTransformer(model_name)
         self.dimension = self.model.get_sentence_embedding_dimension()
         self.index = faiss.IndexFlatIP(self.dimension)
         self._artifacts: list[ReasoningArtifact] = []
         self._conflicts: list[Conflict] = []
+        self._token_log: dict[str, dict[str, int]] = {}
         self._init_db()
         self._load_from_db()
 
@@ -90,7 +93,7 @@ class HiveMemory:
             other = self._artifacts[idx]
             if other.id == artifact.id:
                 continue
-            if score > 0.8 and abs(artifact.confidence - other.confidence) > 0.3:
+            if score > self.conflict_threshold and abs(artifact.confidence - other.confidence) > 0.3:
                 conflict = Conflict(
                     artifact_ids=[artifact.id, other.id],
                     description=(
@@ -100,6 +103,18 @@ class HiveMemory:
                 )
                 self._conflicts.append(conflict)
                 self._save_conflict(conflict)
+
+    def store(self, artifact: ReasoningArtifact) -> list[Conflict]:
+        """Store a pre-built artifact. Returns any new conflicts detected."""
+        artifact.topic_embedding = self._embed(artifact.claim)
+        self._save_artifact(artifact)
+        vec = np.array([artifact.topic_embedding], dtype=np.float32)
+        faiss.normalize_L2(vec)
+        self.index.add(vec)
+        before = len(self._conflicts)
+        self._detect_conflicts(artifact)
+        self._artifacts.append(artifact)
+        return self._conflicts[before:]
 
     def write(
         self,
@@ -139,15 +154,46 @@ class HiveMemory:
                 results.append(self._artifacts[idx])
         return results
 
+    def get_all_artifacts(self) -> list[ReasoningArtifact]:
+        return list(self._artifacts)
+
+    def get_artifact(self, artifact_id: str) -> Optional[ReasoningArtifact]:
+        for a in self._artifacts:
+            if a.id == artifact_id:
+                return a
+        return None
+
     def conflicts(self) -> list[Conflict]:
         return [c for c in self._conflicts if not c.resolved]
+
+    def get_conflicts(self, include_resolved: bool = False) -> list[Conflict]:
+        if include_resolved:
+            return list(self._conflicts)
+        return self.conflicts()
+
+    def resolve_conflict(
+        self,
+        conflict_id: str,
+        winner_id: str = "",
+        reason: str = "",
+        resolved_by: str = "",
+        *,
+        winner_artifact_id: str = "",
+        agent_id: str = "",
+    ):
+        return self.resolve(
+            conflict_id,
+            winner_artifact_id=winner_id or winner_artifact_id,
+            reason=reason,
+            agent_id=resolved_by or agent_id,
+        )
 
     def resolve(
         self,
         conflict_id: str,
-        winner_artifact_id: str,
-        reason: str,
-        agent_id: str,
+        winner_artifact_id: str = "",
+        reason: str = "",
+        agent_id: str = "",
     ):
         for conflict in self._conflicts:
             if conflict.id == conflict_id:
@@ -208,3 +254,39 @@ class HiveMemory:
         index_lines.append("")
         with open(os.path.join(output_dir, "index.md"), "w") as f:
             f.write("\n".join(index_lines))
+
+    def log_tokens(
+        self, agent_id: str, prompt_tokens: int = 0, completion_tokens: int = 0
+    ):
+        if agent_id not in self._token_log:
+            self._token_log[agent_id] = {"prompt": 0, "completion": 0}
+        self._token_log[agent_id]["prompt"] += prompt_tokens
+        self._token_log[agent_id]["completion"] += completion_tokens
+
+    def token_savings_estimate(self) -> dict:
+        total_prompt = sum(v["prompt"] for v in self._token_log.values())
+        total_completion = sum(v["completion"] for v in self._token_log.values())
+        total = total_prompt + total_completion
+        n_agents = len(self._token_log) or 1
+        estimated_without = int(total * (1 + 0.3 * (n_agents - 1)))
+        return {
+            "total_tokens_used": total,
+            "estimated_without_sharing": estimated_without,
+            "estimated_tokens_saved": estimated_without - total,
+        }
+
+    def stats(self) -> dict:
+        total_prompt = sum(v["prompt"] for v in self._token_log.values())
+        total_completion = sum(v["completion"] for v in self._token_log.values())
+        active = [a for a in self._artifacts if a.status == "active"]
+        with_deps = [a for a in self._artifacts if a.dependencies]
+        reuse_rate = len(with_deps) / len(self._artifacts) if self._artifacts else 0.0
+        return {
+            "total_artifacts": len(self._artifacts),
+            "active_artifacts": len(active),
+            "agents": len(set(a.agent_id for a in self._artifacts)),
+            "total_conflicts": len(self._conflicts),
+            "unresolved_conflicts": len(self.conflicts()),
+            "reuse_rate": reuse_rate,
+            "total_tokens": total_prompt + total_completion,
+        }
