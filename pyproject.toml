@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hivememory"
+version = "0.1.0"
+description = "Shared reasoning memory layer for multi-agent systems"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "faiss-cpu>=1.7.4",
+    "sentence-transformers>=2.2.0",
+    "openai>=1.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["hivememory*"]
