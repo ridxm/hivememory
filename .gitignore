@@ -6,3 +6,4 @@ dist/
 build/
 *.db
 examples/wiki_output/
+.env

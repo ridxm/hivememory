@@ -1,0 +1,176 @@
+======================================================================
+  REAL BENCHMARK: Competitive Landscape of AI Code Editors in 2026
+  Model: gpt-4o-mini
+======================================================================
+======================================================================
+BASELINE: No Shared Memory
+======================================================================
+
+────────────────────────────────────────────────────────────
+[product-features]
+  Q: Compare the multi-file editing and agentic coding capabilities of Curs...
+    676 in + 765 out, 3 findings
+      Cursor supports simultaneous editing across up to 10 files.
+      GitHub Copilot has an accuracy rate of 95% in code suggestions.
+      Windsurf allows editing of up to 20 files simultaneously.
+  Q: How do Cursor, Copilot, Claude Code, and Windsurf handle context windo...
+    631 in + 732 out, 3 findings
+      Cursor has increased its context window to 32,000 tokens.
+      Copilot operates with a context window of 16,000 tokens.
+      Cursor boasts a 90% relevance rate for code suggestions.
+  Q: What are the unique advantages of terminal-based AI coding tools (Clau...
+    620 in + 751 out, 3 findings
+      Terminal-based AI coding tools provide 30% faster startup times and 25% red
+      68% of developers reported that they could easily use terminal-based tools 
+      75% of developers engaged in remote work preferred terminal-based tools for
+
+────────────────────────────────────────────────────────────
+[pricing-business]
+  Q: What are the pricing tiers and subscription models for Cursor, GitHub ...
+    645 in + 835 out, 3 findings
+      Cursor offers a competitive pricing model with three tiers: Individual Plan
+      GitHub Copilot's Individual User Plan costs $19/month and the Business Plan
+      Windsurf offers a freemium tier, a Standard Plan at $10/month, and a Premiu
+  Q: What is the market share and estimated revenue of GitHub Copilot vs Cu...
+    572 in + 677 out, 3 findings
+      By 2026, GitHub Copilot is anticipated to hold approximately 45% of the mar
+      The AI code editor market is projected to reach approximately $5 billion by
+      Cursor is projected to capture around 25% of the market share by 2026.
+  Q: Compare the multi-file editing and agentic coding capabilities of Curs...
+    635 in + 730 out, 3 findings
+      Cursor allows users to work on up to 10 files simultaneously.
+      Windsurf has the highest accuracy rate of 94%.
+      GitHub Copilot has a response time of about 150 milliseconds.
+
+────────────────────────────────────────────────────────────
+[devex-analyst]
+  Q: What is the developer satisfaction (NPS) for Cursor, Copilot, Claude C...
+    506 in + 657 out, 3 findings
+      Cursor has an NPS of 62, making it a favorite among developers.
+      IDE-native tools report an average NPS of 60 compared to terminal-based too
+      Copilot has an NPS of 57, attributed to its extensive code suggestion capab
+  Q: What is the market share and estimated revenue of GitHub Copilot vs Cu...
+    538 in + 726 out, 3 findings
+      GitHub Copilot is expected to maintain around 55% of the AI code editor mar
+      Cursor may capture approximately 20% of the market share and generate aroun
+      Claude Code is projected to capture about 15% of the market share and reach
+  Q: What are the unique advantages of terminal-based AI coding tools (Clau...
+    541 in + 659 out, 3 findings
+      68% of developers prefer terminal-based tools for their minimal resource co
+      75% of developers using terminal tools can easily incorporate these tools i
+      80% of terminal tool users appreciate the streamlined interface for focusin
+
+════════════════════════════════════════════════════════════
+BASELINE TOTAL: 11,896 tokens, 18 calls, 113.5s
+
+======================================================================
+SHARED: With HiveMemory
+======================================================================
+
+────────────────────────────────────────────────────────────
+[product-features]
+  Q: Compare the multi-file editing and agentic coding capabilities of Curs...
+    memory: empty
+    FULL: 568 in + 720 out, 3 findings
+      stored: Cursor supports simultaneous editing of up to 10 files with an ac
+      stored: GitHub Copilot allows developers to edit up to 15 files concurren
+      stored: Windsurf can edit up to 8 files at once with an accuracy rate of 
+  Q: How do Cursor, Copilot, Claude Code, and Windsurf handle context windo...
+    memory: no strong matches (top=0.291)
+    FULL: 564 in + 709 out, 3 findings
+      stored: Cursor has an advanced context window of 32,000 tokens and an acc
+      stored: Claude Code has a context window of 24,000 tokens and an accuracy
+      stored: Copilot has a context window of 16,000 tokens and an accuracy rat
+  Q: What are the unique advantages of terminal-based AI coding tools (Clau...
+    memory: no strong matches (top=0.338)
+    FULL: 646 in + 755 out, 3 findings
+      stored: Terminal-based AI coding tools consume fewer system resources tha
+      stored: Approximately 70% of developers prefer terminal tools due to cros
+      stored: 60% of teams using terminal-based AI tools reported enhanced effi
+
+────────────────────────────────────────────────────────────
+[pricing-business]
+  Q: What are the pricing tiers and subscription models for Cursor, GitHub ...
+    memory: no strong matches (top=0.341)
+    FULL: 644 in + 747 out, 3 findings
+      stored: Cursor offers three pricing tiers: Individual, Team, and Enterpri
+      stored: GitHub Copilot has introduced a Pro Tier priced at $19 per month.
+      stored: Windsurf operates on a pay-as-you-go model charging $0.10 per cod
+  Q: What is the market share and estimated revenue of GitHub Copilot vs Cu...
+    memory: 1 relevant artifacts (top=0.633)
+      [pricing-business] GitHub Copilot has introduced a Pro Tier priced at $19 per m... (0.633)
+    FOCUSED: 135 in + 216 out (memory-augmented)
+      stored: GitHub Copilot is projected to capture approximately 40% of the A
+      stored: The overall AI code editor market is forecasted to reach approxim
+      stored: Cursor is anticipated to hold about 25% market share with an esti
+  Q: Compare the multi-file editing and agentic coding capabilities of Curs...
+    memory: 3 relevant artifacts (top=0.725)
+      [product-features] Cursor supports simultaneous editing of up to 10 files with ... (0.725)
+      [product-features] GitHub Copilot allows developers to edit up to 15 files conc... (0.716)
+      [product-features] Windsurf can edit up to 8 files at once with an accuracy rat... (0.600)
+    FOCUSED: 225 in + 212 out (memory-augmented)
+      stored: Cursor supports editing of up to 10 files simultaneously with a 9
+      stored: GitHub Copilot can edit up to 15 files concurrently, achieving a 
+      stored: Windsurf allows for editing of 8 files at the same time with a 90
+
+────────────────────────────────────────────────────────────
+[devex-analyst]
+  Q: What is the developer satisfaction (NPS) for Cursor, Copilot, Claude C...
+    memory: 1 relevant artifacts (top=0.576)
+      [product-features] Approximately 70% of developers prefer terminal tools due to... (0.576)
+    FOCUSED: 146 in + 125 out (memory-augmented)
+      stored: In 2026, the Net Promoter Score (NPS) for Cursor stands at 65.
+      stored: IDE-native tools yield an NPS of 60, higher than terminal tools w
+      stored: Claude Code has an NPS of 58, and Windsurf has a score of 52.
+  Q: What is the market share and estimated revenue of GitHub Copilot vs Cu...
+    memory: 3 relevant artifacts (top=0.720)
+      [pricing-business] GitHub Copilot is projected to capture approximately 40% of ... (0.720)
+      [pricing-business] GitHub Copilot has introduced a Pro Tier priced at $19 per m... (0.633)
+      [pricing-business] Cursor is anticipated to hold about 25% market share with an... (0.571)
+    FOCUSED: 202 in + 137 out (memory-augmented)
+      stored: GitHub Copilot is expected to capture around 40% of the AI code e
+      stored: Cursor is anticipated to have a 25% market share in the AI code e
+      stored: Claude Code is estimated to hold about 15% of the AI code editor 
+  Q: What are the unique advantages of terminal-based AI coding tools (Clau...
+    memory: 5 relevant artifacts (top=0.699)
+      [product-features] Terminal-based AI coding tools consume fewer system resource... (0.699)
+      [product-features] Approximately 70% of developers prefer terminal tools due to... (0.567)
+      [devex-analyst] GitHub Copilot is expected to capture around 40% of the AI c... (0.567)
+    FOCUSED: 281 in + 198 out (memory-augmented)
+      stored: Terminal-based AI coding tools have a faster startup time averagi
+      stored: 65% of users reported that terminal tools increasing their focus 
+      stored: Terminal-based tools have lower latency in code completion and su
+
+════════════════════════════════════════════════════════════
+SHARED TOTAL: 9,810 tokens, 18 calls, 101.9s
+Focused (memory-augmented) queries: 5/9
+Conflicts detected: 0, resolved: 0
+
+======================================================================
+LLM-as-judge quality eval (3 runs)...
+======================================================================
+
+Saved to /cache/home/rm1838/Developer/hivememory/benchmarks/results.json
+
+======================================================================
+  RESULTS
+======================================================================
+
+Metric                                  Baseline   HiveMemory      Delta
+──────────────────────────────────────────────────────────────────────
+Total tokens                              11,896        9,810     -17.5%
+Input tokens                               5,364        4,649
+Output tokens                              6,532        5,161
+LLM calls                                     18           18          0
+Memory-augmented queries                       0            5
+Conflicts detected                             0            0
+Conflicts resolved                             0            0
+Reuse rate                                    0%         56%
+Time (seconds)                             113.5        101.9
+──────────────────────────────────────────────────────────────────────
+
+Quality (avg of 3 runs):
+  completeness              baseline: 9.0  hivememory: 9.3
+  accuracy                  baseline: 9.0  hivememory: 8.7
+  coherence                 baseline: 8.0  hivememory: 8.7
+  contradiction_free        baseline: 9.0  hivememory: 9.3

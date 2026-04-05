@@ -20,6 +20,9 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
+    "matplotlib>=3.7.0",
+    "networkx>=3.0",
+    "python-dotenv>=1.0.0",
 ]
 
 [tool.setuptools.packages.find]

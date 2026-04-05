@@ -1,0 +1,541 @@
+{
+  "topic": "Competitive Landscape of AI Code Editors in 2026",
+  "model": "gpt-4o-mini",
+  "baseline": {
+    "agents": {
+      "product-features": {
+        "input_tokens": 1927,
+        "output_tokens": 2248,
+        "llm_calls": 6,
+        "artifacts_reused": 0,
+        "artifacts_written": 9,
+        "findings": [
+          "Cursor supports simultaneous editing across up to 10 files.",
+          "GitHub Copilot has an accuracy rate of 95% in code suggestions.",
+          "Windsurf allows editing of up to 20 files simultaneously.",
+          "Cursor has increased its context window to 32,000 tokens.",
+          "Copilot operates with a context window of 16,000 tokens.",
+          "Cursor boasts a 90% relevance rate for code suggestions.",
+          "Terminal-based AI coding tools provide 30% faster startup times and 25% reduced memory usage compared to IDEs.",
+          "68% of developers reported that they could easily use terminal-based tools in combination with other command-line utilities.",
+          "75% of developers engaged in remote work preferred terminal-based tools for their ability to function seamlessly over SSH connections."
+        ]
+      },
+      "pricing-business": {
+        "input_tokens": 1852,
+        "output_tokens": 2242,
+        "llm_calls": 6,
+        "artifacts_reused": 0,
+        "artifacts_written": 9,
+        "findings": [
+          "Cursor offers a competitive pricing model with three tiers: Individual Plan at $15/month, Team Plan at $45/user/month, and Enterprise Plan starting at $150/month.",
+          "GitHub Copilot's Individual User Plan costs $19/month and the Business Plan costs $49/user/month.",
+          "Windsurf offers a freemium tier, a Standard Plan at $10/month, and a Premium Plan at $30/month.",
+          "By 2026, GitHub Copilot is anticipated to hold approximately 45% of the market share.",
+          "The AI code editor market is projected to reach approximately $5 billion by 2026.",
+          "Cursor is projected to capture around 25% of the market share by 2026.",
+          "Cursor allows users to work on up to 10 files simultaneously.",
+          "Windsurf has the highest accuracy rate of 94%.",
+          "GitHub Copilot has a response time of about 150 milliseconds."
+        ]
+      },
+      "devex-analyst": {
+        "input_tokens": 1585,
+        "output_tokens": 2042,
+        "llm_calls": 6,
+        "artifacts_reused": 0,
+        "artifacts_written": 9,
+        "findings": [
+          "Cursor has an NPS of 62, making it a favorite among developers.",
+          "IDE-native tools report an average NPS of 60 compared to terminal-based tools which have an average NPS of 45.",
+          "Copilot has an NPS of 57, attributed to its extensive code suggestion capabilities.",
+          "GitHub Copilot is expected to maintain around 55% of the AI code editor market share by 2026.",
+          "Cursor may capture approximately 20% of the market share and generate around $250 million in revenue by 2026.",
+          "Claude Code is projected to capture about 15% of the market share and reach $150 million in revenue by 2026.",
+          "68% of developers prefer terminal-based tools for their minimal resource consumption.",
+          "75% of developers using terminal tools can easily incorporate these tools into their command-line workflows.",
+          "80% of terminal tool users appreciate the streamlined interface for focusing on coding."
+        ]
+      }
+    },
+    "total_input_tokens": 5364,
+    "total_output_tokens": 6532,
+    "total_tokens": 11896,
+    "total_llm_calls": 18,
+    "elapsed_seconds": 113.54
+  },
+  "shared": {
+    "agents": {
+      "product-features": {
+        "input_tokens": 1778,
+        "output_tokens": 2184,
+        "llm_calls": 6,
+        "artifacts_reused": 0,
+        "artifacts_written": 9,
+        "findings": [
+          "Cursor supports simultaneous editing of up to 10 files with an accuracy rate of approximately 93%.",
+          "GitHub Copilot allows developers to edit up to 15 files concurrently with an accuracy rate of 95%.",
+          "Windsurf can edit up to 8 files at once with an accuracy rate of 90%.",
+          "Cursor has an advanced context window of 32,000 tokens and an accuracy rate of approximately 87%.",
+          "Claude Code has a context window of 24,000 tokens and an accuracy rate of 90%.",
+          "Copilot has a context window of 16,000 tokens and an accuracy rate of around 82%.",
+          "Terminal-based AI coding tools consume fewer system resources than IDEs.",
+          "Approximately 70% of developers prefer terminal tools due to cross-platform compatibility.",
+          "60% of teams using terminal-based AI tools reported enhanced efficiency in their CI/CD processes."
+        ],
+        "queries_skipped": 0,
+        "queries_focused": 0
+      },
+      "pricing-business": {
+        "input_tokens": 1572,
+        "output_tokens": 1769,
+        "llm_calls": 6,
+        "artifacts_reused": 4,
+        "artifacts_written": 9,
+        "findings": [
+          "Cursor offers three pricing tiers: Individual, Team, and Enterprise.",
+          "GitHub Copilot has introduced a Pro Tier priced at $19 per month.",
+          "Windsurf operates on a pay-as-you-go model charging $0.10 per code suggestion.",
+          "GitHub Copilot is projected to capture approximately 40% of the AI code editor market in 2026.",
+          "The overall AI code editor market is forecasted to reach approximately $1.2 billion in 2026.",
+          "Cursor is anticipated to hold about 25% market share with an estimated revenue of $200 million.",
+          "Cursor supports editing of up to 10 files simultaneously with a 93% accuracy rate and performs edits at an average speed of 400 lines of code per minute.",
+          "GitHub Copilot can edit up to 15 files concurrently, achieving a 95% accuracy rate and a speed of 450 lines of code per minute.",
+          "Windsurf allows for editing of 8 files at the same time with a 90% accuracy rate and a speed of 380 lines per minute."
+        ],
+        "queries_skipped": 0,
+        "queries_focused": 2
+      },
+      "devex-analyst": {
+        "input_tokens": 1299,
+        "output_tokens": 1208,
+        "llm_calls": 6,
+        "artifacts_reused": 9,
+        "artifacts_written": 9,
+        "findings": [
+          "In 2026, the Net Promoter Score (NPS) for Cursor stands at 65.",
+          "IDE-native tools yield an NPS of 60, higher than terminal tools which have an NPS of 55.",
+          "Claude Code has an NPS of 58, and Windsurf has a score of 52.",
+          "GitHub Copilot is expected to capture around 40% of the AI code editor market in 2026.",
+          "Cursor is anticipated to have a 25% market share in the AI code editor market.",
+          "Claude Code is estimated to hold about 15% of the AI code editor market.",
+          "Terminal-based AI coding tools have a faster startup time averaging 2-3 seconds compared to IDEs which average around 8-10 seconds.",
+          "65% of users reported that terminal tools increasing their focus and reducing distractions due to integration with lightweight text editors.",
+          "Terminal-based tools have lower latency in code completion and suggestions, with average response times of 150-200 milliseconds compared to 300-500 milliseconds for IDEs."
+        ],
+        "queries_skipped": 0,
+        "queries_focused": 3
+      }
+    },
+    "total_input_tokens": 4649,
+    "total_output_tokens": 5161,
+    "total_tokens": 9810,
+    "total_llm_calls": 18,
+    "elapsed_seconds": 101.88,
+    "conflicts_detected": 0,
+    "conflicts_resolved": 0,
+    "reuse_rate": 0.5555555555555556,
+    "focused_queries": 5,
+    "token_breakdown": {
+      "original_research": 2142,
+      "focused_research": 1877,
+      "extraction": 5791,
+      "conflict_detection": 0
+    },
+    "provenance_edges": [
+      {
+        "from": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "to": "7e99c41b-f7d6-470f-91d4-e7a8307e80c4"
+      },
+      {
+        "from": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "to": "667d7013-9e93-4a72-b1f3-4875a8623169"
+      },
+      {
+        "from": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "to": "f151301b-4bd8-4579-8ed1-ea9836ef3923"
+      },
+      {
+        "from": "1927ad8f-e076-4468-b49c-541f48abae5d",
+        "to": "7b817399-7dc5-4761-8aaa-153498f6437b"
+      },
+      {
+        "from": "d67e7f22-094c-4327-8671-b1f26b13831b",
+        "to": "7b817399-7dc5-4761-8aaa-153498f6437b"
+      },
+      {
+        "from": "7c60d990-4b60-4eb6-8986-9d9e2145be4f",
+        "to": "7b817399-7dc5-4761-8aaa-153498f6437b"
+      },
+      {
+        "from": "1927ad8f-e076-4468-b49c-541f48abae5d",
+        "to": "5caa4448-1933-4977-acd4-c15741af18ae"
+      },
+      {
+        "from": "d67e7f22-094c-4327-8671-b1f26b13831b",
+        "to": "5caa4448-1933-4977-acd4-c15741af18ae"
+      },
+      {
+        "from": "7c60d990-4b60-4eb6-8986-9d9e2145be4f",
+        "to": "5caa4448-1933-4977-acd4-c15741af18ae"
+      },
+      {
+        "from": "1927ad8f-e076-4468-b49c-541f48abae5d",
+        "to": "2919197a-985d-42e3-a8a5-79606bd3def1"
+      },
+      {
+        "from": "d67e7f22-094c-4327-8671-b1f26b13831b",
+        "to": "2919197a-985d-42e3-a8a5-79606bd3def1"
+      },
+      {
+        "from": "7c60d990-4b60-4eb6-8986-9d9e2145be4f",
+        "to": "2919197a-985d-42e3-a8a5-79606bd3def1"
+      },
+      {
+        "from": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "to": "b12bc563-a674-41f6-823b-1133a19c6439"
+      },
+      {
+        "from": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "to": "f07b4e45-ec0f-4260-b2b6-15bd18bce200"
+      },
+      {
+        "from": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "to": "15e53d7f-29c8-4a28-8b20-fea980a06d6c"
+      },
+      {
+        "from": "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+        "to": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9"
+      },
+      {
+        "from": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "to": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9"
+      },
+      {
+        "from": "f151301b-4bd8-4579-8ed1-ea9836ef3923",
+        "to": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9"
+      },
+      {
+        "from": "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+        "to": "9de9e0a1-1282-4ae7-9236-3880b988052a"
+      },
+      {
+        "from": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "to": "9de9e0a1-1282-4ae7-9236-3880b988052a"
+      },
+      {
+        "from": "f151301b-4bd8-4579-8ed1-ea9836ef3923",
+        "to": "9de9e0a1-1282-4ae7-9236-3880b988052a"
+      },
+      {
+        "from": "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+        "to": "73bbffd6-863d-4191-bfd1-2c3d563166f5"
+      },
+      {
+        "from": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "to": "73bbffd6-863d-4191-bfd1-2c3d563166f5"
+      },
+      {
+        "from": "f151301b-4bd8-4579-8ed1-ea9836ef3923",
+        "to": "73bbffd6-863d-4191-bfd1-2c3d563166f5"
+      },
+      {
+        "from": "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+        "to": "88fcec9d-ab5c-463a-964e-eff317793274"
+      },
+      {
+        "from": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "to": "88fcec9d-ab5c-463a-964e-eff317793274"
+      },
+      {
+        "from": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9",
+        "to": "88fcec9d-ab5c-463a-964e-eff317793274"
+      },
+      {
+        "from": "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+        "to": "4feae9a9-7a8f-4dc8-a0e8-b38b728bfec1"
+      },
+      {
+        "from": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "to": "4feae9a9-7a8f-4dc8-a0e8-b38b728bfec1"
+      },
+      {
+        "from": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9",
+        "to": "4feae9a9-7a8f-4dc8-a0e8-b38b728bfec1"
+      },
+      {
+        "from": "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+        "to": "e2ae57a0-c725-453c-9e97-115da3278c15"
+      },
+      {
+        "from": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "to": "e2ae57a0-c725-453c-9e97-115da3278c15"
+      },
+      {
+        "from": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9",
+        "to": "e2ae57a0-c725-453c-9e97-115da3278c15"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "1927ad8f-e076-4468-b49c-541f48abae5d",
+        "claim": "Cursor supports simultaneous editing of up to 10 files with an accuracy rate of approximately 93%.",
+        "agent_id": "product-features",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "d67e7f22-094c-4327-8671-b1f26b13831b",
+        "claim": "GitHub Copilot allows developers to edit up to 15 files concurrently with an accuracy rate of 95%.",
+        "agent_id": "product-features",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "7c60d990-4b60-4eb6-8986-9d9e2145be4f",
+        "claim": "Windsurf can edit up to 8 files at once with an accuracy rate of 90%.",
+        "agent_id": "product-features",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "c0d0d964-105e-4031-9bb4-806fc6f34890",
+        "claim": "Cursor has an advanced context window of 32,000 tokens and an accuracy rate of approximately 87%.",
+        "agent_id": "product-features",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "c1684f78-52c4-4924-9d16-ebecf6ac05ed",
+        "claim": "Claude Code has a context window of 24,000 tokens and an accuracy rate of 90%.",
+        "agent_id": "product-features",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "be7db751-5e38-4ca7-ba2d-dde5cb595e12",
+        "claim": "Copilot has a context window of 16,000 tokens and an accuracy rate of around 82%.",
+        "agent_id": "product-features",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+        "claim": "Terminal-based AI coding tools consume fewer system resources than IDEs.",
+        "agent_id": "product-features",
+        "confidence": 0.9,
+        "dependencies": []
+      },
+      {
+        "id": "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+        "claim": "Approximately 70% of developers prefer terminal tools due to cross-platform compatibility.",
+        "agent_id": "product-features",
+        "confidence": 0.8,
+        "dependencies": []
+      },
+      {
+        "id": "a22ac1b0-0f51-46fe-b7ee-c1e70711605a",
+        "claim": "60% of teams using terminal-based AI tools reported enhanced efficiency in their CI/CD processes.",
+        "agent_id": "product-features",
+        "confidence": 0.85,
+        "dependencies": []
+      },
+      {
+        "id": "f4e43d76-6fe8-468a-9c18-7e4899df058c",
+        "claim": "Cursor offers three pricing tiers: Individual, Team, and Enterprise.",
+        "agent_id": "pricing-business",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "243ca02a-18cf-4646-8273-68c46ea0915c",
+        "claim": "GitHub Copilot has introduced a Pro Tier priced at $19 per month.",
+        "agent_id": "pricing-business",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "78bf617b-15eb-4db4-ae44-7aff6067b9c1",
+        "claim": "Windsurf operates on a pay-as-you-go model charging $0.10 per code suggestion.",
+        "agent_id": "pricing-business",
+        "confidence": 1.0,
+        "dependencies": []
+      },
+      {
+        "id": "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+        "claim": "GitHub Copilot is projected to capture approximately 40% of the AI code editor market in 2026.",
+        "agent_id": "pricing-business",
+        "confidence": 0.9,
+        "dependencies": [
+          "243ca02a-18cf-4646-8273-68c46ea0915c"
+        ]
+      },
+      {
+        "id": "667d7013-9e93-4a72-b1f3-4875a8623169",
+        "claim": "The overall AI code editor market is forecasted to reach approximately $1.2 billion in 2026.",
+        "agent_id": "pricing-business",
+        "confidence": 0.9,
+        "dependencies": [
+          "243ca02a-18cf-4646-8273-68c46ea0915c"
+        ]
+      },
+      {
+        "id": "f151301b-4bd8-4579-8ed1-ea9836ef3923",
+        "claim": "Cursor is anticipated to hold about 25% market share with an estimated revenue of $200 million.",
+        "agent_id": "pricing-business",
+        "confidence": 0.8,
+        "dependencies": [
+          "243ca02a-18cf-4646-8273-68c46ea0915c"
+        ]
+      },
+      {
+        "id": "7b817399-7dc5-4761-8aaa-153498f6437b",
+        "claim": "Cursor supports editing of up to 10 files simultaneously with a 93% accuracy rate and performs edits at an average speed of 400 lines of code per minute.",
+        "agent_id": "pricing-business",
+        "confidence": 1.0,
+        "dependencies": [
+          "1927ad8f-e076-4468-b49c-541f48abae5d",
+          "d67e7f22-094c-4327-8671-b1f26b13831b",
+          "7c60d990-4b60-4eb6-8986-9d9e2145be4f"
+        ]
+      },
+      {
+        "id": "5caa4448-1933-4977-acd4-c15741af18ae",
+        "claim": "GitHub Copilot can edit up to 15 files concurrently, achieving a 95% accuracy rate and a speed of 450 lines of code per minute.",
+        "agent_id": "pricing-business",
+        "confidence": 1.0,
+        "dependencies": [
+          "1927ad8f-e076-4468-b49c-541f48abae5d",
+          "d67e7f22-094c-4327-8671-b1f26b13831b",
+          "7c60d990-4b60-4eb6-8986-9d9e2145be4f"
+        ]
+      },
+      {
+        "id": "2919197a-985d-42e3-a8a5-79606bd3def1",
+        "claim": "Windsurf allows for editing of 8 files at the same time with a 90% accuracy rate and a speed of 380 lines per minute.",
+        "agent_id": "pricing-business",
+        "confidence": 1.0,
+        "dependencies": [
+          "1927ad8f-e076-4468-b49c-541f48abae5d",
+          "d67e7f22-094c-4327-8671-b1f26b13831b",
+          "7c60d990-4b60-4eb6-8986-9d9e2145be4f"
+        ]
+      },
+      {
+        "id": "b12bc563-a674-41f6-823b-1133a19c6439",
+        "claim": "In 2026, the Net Promoter Score (NPS) for Cursor stands at 65.",
+        "agent_id": "devex-analyst",
+        "confidence": 1.0,
+        "dependencies": [
+          "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6"
+        ]
+      },
+      {
+        "id": "f07b4e45-ec0f-4260-b2b6-15bd18bce200",
+        "claim": "IDE-native tools yield an NPS of 60, higher than terminal tools which have an NPS of 55.",
+        "agent_id": "devex-analyst",
+        "confidence": 1.0,
+        "dependencies": [
+          "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6"
+        ]
+      },
+      {
+        "id": "15e53d7f-29c8-4a28-8b20-fea980a06d6c",
+        "claim": "Claude Code has an NPS of 58, and Windsurf has a score of 52.",
+        "agent_id": "devex-analyst",
+        "confidence": 1.0,
+        "dependencies": [
+          "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6"
+        ]
+      },
+      {
+        "id": "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9",
+        "claim": "GitHub Copilot is expected to capture around 40% of the AI code editor market in 2026.",
+        "agent_id": "devex-analyst",
+        "confidence": 0.9,
+        "dependencies": [
+          "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+          "243ca02a-18cf-4646-8273-68c46ea0915c",
+          "f151301b-4bd8-4579-8ed1-ea9836ef3923"
+        ]
+      },
+      {
+        "id": "9de9e0a1-1282-4ae7-9236-3880b988052a",
+        "claim": "Cursor is anticipated to have a 25% market share in the AI code editor market.",
+        "agent_id": "devex-analyst",
+        "confidence": 0.9,
+        "dependencies": [
+          "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+          "243ca02a-18cf-4646-8273-68c46ea0915c",
+          "f151301b-4bd8-4579-8ed1-ea9836ef3923"
+        ]
+      },
+      {
+        "id": "73bbffd6-863d-4191-bfd1-2c3d563166f5",
+        "claim": "Claude Code is estimated to hold about 15% of the AI code editor market.",
+        "agent_id": "devex-analyst",
+        "confidence": 0.9,
+        "dependencies": [
+          "7e99c41b-f7d6-470f-91d4-e7a8307e80c4",
+          "243ca02a-18cf-4646-8273-68c46ea0915c",
+          "f151301b-4bd8-4579-8ed1-ea9836ef3923"
+        ]
+      },
+      {
+        "id": "88fcec9d-ab5c-463a-964e-eff317793274",
+        "claim": "Terminal-based AI coding tools have a faster startup time averaging 2-3 seconds compared to IDEs which average around 8-10 seconds.",
+        "agent_id": "devex-analyst",
+        "confidence": 0.9,
+        "dependencies": [
+          "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+          "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+          "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9"
+        ]
+      },
+      {
+        "id": "4feae9a9-7a8f-4dc8-a0e8-b38b728bfec1",
+        "claim": "65% of users reported that terminal tools increasing their focus and reducing distractions due to integration with lightweight text editors.",
+        "agent_id": "devex-analyst",
+        "confidence": 0.9,
+        "dependencies": [
+          "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+          "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+          "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9"
+        ]
+      },
+      {
+        "id": "e2ae57a0-c725-453c-9e97-115da3278c15",
+        "claim": "Terminal-based tools have lower latency in code completion and suggestions, with average response times of 150-200 milliseconds compared to 300-500 milliseconds for IDEs.",
+        "agent_id": "devex-analyst",
+        "confidence": 0.9,
+        "dependencies": [
+          "30c85f5a-d9e9-4c2f-9bfd-862e63f27751",
+          "6e45b8b0-cdb8-4777-9cdb-6fb68f4a4bc6",
+          "9d66d6e7-8cba-460f-ac3d-abfbabe3ddc9"
+        ]
+      }
+    ],
+    "conflict_details": []
+  },
+  "quality": {
+    "baseline": {
+      "completeness": 9.0,
+      "accuracy": 9.0,
+      "coherence": 8.0,
+      "contradiction_free": 9.0
+    },
+    "shared": {
+      "completeness": 9.3,
+      "accuracy": 8.7,
+      "coherence": 8.7,
+      "contradiction_free": 9.3
+    },
+    "eval_tokens": 4062,
+    "n_runs": 3
+  },
+  "comparison": {
+    "token_savings": 2086,
+    "token_savings_pct": 17.5,
+    "llm_call_savings": 0
+  }
+}

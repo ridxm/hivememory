@@ -154,6 +154,22 @@ class HiveMemory:
                 results.append(self._artifacts[idx])
         return results
 
+    def query_with_scores(
+        self, query: str, top_k: int = 5
+    ) -> list[tuple[ReasoningArtifact, float]]:
+        """Like query() but returns (artifact, similarity_score) tuples."""
+        if self.index.ntotal == 0:
+            return []
+        vec = np.array([self._embed(query)], dtype=np.float32)
+        faiss.normalize_L2(vec)
+        k = min(top_k, self.index.ntotal)
+        scores, indices = self.index.search(vec, k)
+        results = []
+        for score, idx in zip(scores[0], indices[0]):
+            if 0 <= idx < len(self._artifacts):
+                results.append((self._artifacts[idx], float(score)))
+        return results
+
     def get_all_artifacts(self) -> list[ReasoningArtifact]:
         return list(self._artifacts)
 

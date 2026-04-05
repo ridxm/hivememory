@@ -8,17 +8,26 @@ When multiple AI agents research the same problem independently, they waste toke
 
 ## Results
 
-Benchmark: 3 agents research "Competitive Landscape of AI Code Editors (2026)" with and without shared memory.
+Benchmark: 3 agents research "Competitive Landscape of AI Code Editors in 2026" using gpt-4o-mini, with and without shared memory. Each agent researches 3 sub-topics. In the shared configuration, agents query hivememory before each LLM call — when prior findings exist, the agent receives a focused prompt that avoids redundant research.
 
 | Metric | Baseline (no shared memory) | hivememory |
 |---|---|---|
-| Total tokens consumed | 6,123 | 2,368 |
-| Redundant reasoning chains | 2 extra background passes | 0 (reused from memory) |
-| Contradictions caught | 0 | auto-detected via embedding similarity |
-| Output quality score (LLM-as-judge) | 0.967 | 0.967 |
-| End-to-end time | <0.01s | 4.5s |
+| Total tokens consumed | 11,896 | 9,810 (-17.5%) |
+| Memory-augmented queries | 0 / 9 | 5 / 9 |
+| Output quality (LLM-as-judge, avg 3 runs) | 8.8 | 9.0 |
+| Contradiction-free score | 9.0 | 9.3 |
+| Reuse rate | 0% | 56% |
+| Wall clock time | 113.5s | 101.9s |
 
-Token usage drops 61% because agents query shared memory before calling the LLM, reusing findings from earlier agents instead of re-deriving them. Quality stays the same. The time increase reflects embedding computation (sentence-transformers), which is a one-time cost per artifact — amortized over real LLM latencies, it's negligible.
+Token savings come from agents 2 and 3 receiving memory context that produces shorter, non-redundant LLM responses. Quality is equal or slightly better because memory-augmented agents build on verified findings rather than re-deriving from scratch.
+
+![Token consumption per agent](screenshots/token_consumption_per_agent.png)
+*Agents 2 and 3 use fewer tokens when prior findings are available in memory.*
+
+![Total token consumption](screenshots/token_consumption_total.png)
+
+![Quality comparison](screenshots/quality_comparison.png)
+*LLM-as-judge scores across 4 dimensions, averaged over 3 evaluation runs.*
 
 ## Architecture
 
@@ -35,6 +44,12 @@ Token usage drops 61% because agents query shared memory before calling the LLM,
                  └───────────┘
 ```
 
+![Artifact reuse flow](screenshots/artifact_reuse_flow.png)
+*How artifacts flow between agents. Agent 1 writes findings; agents 2 and 3 query memory, reuse relevant work, and focus on gaps.*
+
+![Provenance DAG](screenshots/provenance_dag.png)
+*Dependency graph of artifacts. Colors indicate source agent. Edges show "built on" relationships.*
+
 ## Quickstart
 
 ```bash
@@ -42,20 +57,19 @@ pip install hivememory
 ```
 
 ```python
-from hivememory import HiveMemory, Evidence, ReasoningArtifact
+from hivememory import HiveMemory, Evidence
 
 hive = HiveMemory()
 
-# agent 1 stores a finding
-art = ReasoningArtifact(
+# store a finding
+art = hive.write(
     claim="Voice AI market projected to reach $50B by 2028",
-    agent_id="researcher-1",
     evidence=[Evidence(source="industry report", content="35% CAGR", reliability=0.9)],
     confidence=0.85,
+    agent_id="researcher-1",
 )
-conflicts = hive.store(art)
 
-# agent 2 queries before doing its own research
+# query shared memory before doing new research
 existing = hive.query("voice AI market size", top_k=3)
 
 # check for contradictions
@@ -75,7 +89,10 @@ Agents store structured claims with evidence, confidence scores, and provenance 
 
 ### Conflict detection
 
-When a new artifact is stored, hivememory computes its embedding and searches FAISS for similar existing claims. If two artifacts are semantically close but have divergent confidence scores, a conflict is flagged. In production, this first stage can be followed by an LLM contradiction check (OpenAI or Anthropic) for higher-precision detection.
+When a new artifact is stored, hivememory computes its embedding and searches FAISS for similar existing claims. If two artifacts are semantically close but have divergent confidence scores, a conflict is flagged. This first stage can be followed by an LLM contradiction check (OpenAI or Anthropic) for higher-precision detection.
+
+![Conflict detection funnel](screenshots/conflict_funnel.png)
+*Two-stage filtering: embedding similarity narrows candidates, LLM verification confirms contradictions.*
 
 ### Provenance tracking
 
@@ -96,11 +113,10 @@ examples/
   basic_usage.py       # store, query, conflict detect, resolve, export
   research_task.py     # 3-agent research demo with full pipeline
 benchmarks/
-  common.py            # shared research data and BenchmarkResult
-  baseline.py          # 3 agents with no shared memory
-  shared.py            # 3 agents with hivememory
-  evaluate.py          # quality scoring and comparison
-  run_all.py           # run both and print comparison table
+  real_benchmark.py    # real LLM benchmark (gpt-4o-mini)
+  generate_charts.py   # generate all charts from results.json
+  results.json         # raw benchmark data
+  results_summary.md   # human-readable summary
 tests/
   test_artifact.py     # artifact serialization and ID generation
   test_store.py        # persistence layer tests
@@ -113,16 +129,19 @@ tests/
 - `python examples/basic_usage.py` — store artifacts, query memory, detect and resolve conflicts, export a wiki. Good first run to verify installation.
 - `python examples/research_task.py` — three agents research AI code editors, sharing findings through hivememory. Shows artifact reuse, conflict detection, provenance tracking, and wiki export end-to-end.
 
+![Token breakdown](screenshots/token_breakdown_pie.png)
+*Where tokens go: baseline is all original research. hivememory splits tokens between original research, focused (memory-augmented) queries, and extraction.*
+
 ## Setup
 
 - Python 3.10+
 - `pip install hivememory`
-- Set `OPENAI_API_KEY` for LLM-based conflict detection (optional — embedding-based detection works without it)
+- Set `OPENAI_API_KEY` for LLM-based conflict detection (optional -- embedding-based detection works without it)
 - Run `python examples/basic_usage.py` to verify
 
 ## Related work
 
-- Wang et al., "Shared Memory Architectures for Multi-Agent LLM Systems," SIGARCH Workshop on LLM Systems, March 2026. Formalizes the shared memory problem for multi-agent coordination and proposes artifact-based memory over raw context passing.
+- Yu et al., "Multi-Agent Memory from a Computer Architecture Perspective: Visions and Challenges Ahead," Architecture 2.0 Workshop (UCSD/CMU), March 2026. Frames multi-agent memory as a systems problem and proposes structured memory hierarchies over flat context passing.
 - Karpathy, "LLM Knowledge Bases" (blog post, 2025). Demonstrates single-agent knowledge accumulation with structured retrieval. hivememory extends this pattern to multi-agent systems, adding conflict detection and provenance tracking across agents.
 
 Single-agent knowledge bases work. hivememory makes them multi-agent.
