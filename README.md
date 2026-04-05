@@ -91,9 +91,6 @@ Agents store structured claims with evidence, confidence scores, and provenance 
 
 When a new artifact is stored, hivememory computes its embedding and searches FAISS for similar existing claims. If two artifacts are semantically close but have divergent confidence scores, a conflict is flagged. This first stage can be followed by an LLM contradiction check (OpenAI or Anthropic) for higher-precision detection.
 
-![Conflict detection funnel](screenshots/conflict_funnel.png)
-*Two-stage filtering: embedding similarity narrows candidates, LLM verification confirms contradictions.*
-
 ### Provenance tracking
 
 Every artifact records its dependencies as a list of artifact IDs, forming a directed acyclic graph. This DAG answers "which agent's work did this conclusion build on?" and enables cascading invalidation — if an upstream artifact is superseded, downstream consumers can be notified.
