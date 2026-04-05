@@ -138,7 +138,7 @@ tests/
 
 ## Related work
 
-- Yu et al., "Multi-Agent Memory from a Computer Architecture Perspective: Visions and Challenges Ahead," Architecture 2.0 Workshop (UCSD/CMU), March 2026. Frames multi-agent memory as a systems problem and proposes structured memory hierarchies over flat context passing.
+- Yu et al., ["Multi-Agent Memory from a Computer Architecture Perspective: Visions and Challenges Ahead,"](https://arxiv.org/abs/2603.10062) March 2026. Applies computer architecture principles to multi-agent LLM memory, proposing a three-layer memory hierarchy and identifying gaps in cache sharing and memory access control.
 - Karpathy, "LLM Knowledge Bases" (blog post, 2025). Demonstrates single-agent knowledge accumulation with structured retrieval. hivememory extends this pattern to multi-agent systems, adding conflict detection and provenance tracking across agents.
 
 Single-agent knowledge bases work. hivememory makes them multi-agent.
