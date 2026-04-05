@@ -1,11 +1,13 @@
 from hivememory.artifact import ReasoningArtifact, Evidence, Conflict
+from hivememory.conflicts import ConflictDetector
+from hivememory.core import HiveMemory
+from hivememory.provenance import ProvenanceTracker
 
-__all__ = ["HiveMemory", "ReasoningArtifact", "Evidence", "Conflict"]
-
-
-def __getattr__(name):
-    if name == "HiveMemory":
-        from hivememory.core import HiveMemory
-
-        return HiveMemory
-    raise AttributeError(f"module 'hivememory' has no attribute {name}")
+__all__ = [
+    "HiveMemory",
+    "ReasoningArtifact",
+    "Evidence",
+    "Conflict",
+    "ConflictDetector",
+    "ProvenanceTracker",
+]
