@@ -4,7 +4,7 @@ Shared reasoning memory for multi-agent systems.
 
 When multiple AI agents research the same problem independently, they waste tokens re-deriving the same knowledge and produce contradictory conclusions no one catches. hivememory gives agents a shared memory layer where they store structured reasoning artifacts, reuse each other's work, and surface contradictions automatically.
 
-[Project page (coming soon)](#)
+Project page: https://ridxm.github.io/hivememory/
 
 ## Results
 
